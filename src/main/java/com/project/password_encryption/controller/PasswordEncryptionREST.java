@@ -6,29 +6,31 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.password_encryption.services.IPasswordEncryptionService;
 
 import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/encrypt_password")
 public class PasswordEncryptionREST {
 
-  IPasswordEncryptionService passwordEncryptionService;
+  private final IPasswordEncryptionService passwordEncryptionService;
 
   public PasswordEncryptionREST(IPasswordEncryptionService passwordEncryptionService) {
     this.passwordEncryptionService = passwordEncryptionService;
   }
 
+  private Map<String, String> response = new HashMap<>();
   private String hashedPassword = "";
 
   @GetMapping("/bcrypt")
   public ResponseEntity<Object> useBcrypt(@RequestBody String password) {
     hashedPassword = passwordEncryptionService.encodeWithBcrypt(password);
-    return new ResponseEntity<>(hashedPassword, HttpStatus.OK);
+    response.put("hashedPassword", hashedPassword);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @GetMapping("/scrypt")
@@ -43,15 +45,9 @@ public class PasswordEncryptionREST {
     return new ResponseEntity<>(hashedPassword, HttpStatus.OK);
   }
 
-  @GetMapping("/{algorithm}")
-  public ResponseEntity<Object> useAlgorithm(@RequestBody String password, @PathVariable String algorithm) {
-    hashedPassword = passwordEncryptionService.encodeWithAlgorithm(password, algorithm);
-    return new ResponseEntity<>(hashedPassword, HttpStatus.OK);
-  }
-
   @GetMapping("/argon2id")
-  public ResponseEntity<Object> useArgon2id(@RequestBody String password, @RequestBody Map<String, Integer> params) {
-    hashedPassword = passwordEncryptionService.encodeWithArgon2id(password, params);
+  public ResponseEntity<Object> useArgon2id(@RequestBody Map<String, Object> params) {
+    hashedPassword = passwordEncryptionService.encodeWithArgon2id(params);
     return new ResponseEntity<>(hashedPassword, HttpStatus.OK);
   }
 
