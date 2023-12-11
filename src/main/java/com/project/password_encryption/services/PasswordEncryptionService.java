@@ -17,10 +17,10 @@ import de.mkammerer.argon2.Argon2Factory;
 @Service
 public class PasswordEncryptionService implements IPasswordEncryptionService {
 
-    Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
-    Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder();
+    private final Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private final SCryptPasswordEncoder sCryptPasswordEncoder = new SCryptPasswordEncoder();
+    private final Pbkdf2PasswordEncoder pbkdf2PasswordEncoder = new Pbkdf2PasswordEncoder();
 
     @Override
     public Map<String, String> encodePassword(String algorithm, Map<String, Object> params) {
