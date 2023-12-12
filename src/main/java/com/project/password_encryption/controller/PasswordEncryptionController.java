@@ -20,7 +20,6 @@ public class PasswordEncryptionController {
 
     private final IPasswordEncryptionService passwordEncryptionService;
 
-    @Autowired
     public PasswordEncryptionController(IPasswordEncryptionService passwordEncryptionService) {
         this.passwordEncryptionService = passwordEncryptionService;
     }
