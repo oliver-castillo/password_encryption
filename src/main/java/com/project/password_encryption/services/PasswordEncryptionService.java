@@ -24,8 +24,8 @@ public class PasswordEncryptionService implements IPasswordEncryptionService {
 
     @Override
     public Map<String, String> encodePassword(String algorithm, Map<String, Object> params) {
-        String password = params.get("password").toString();
         checkParams(algorithm, params);
+        String password = params.get("password").toString();
         String hashedPassword = switch (algorithm) {
             case "bcrypt" -> encodeWithBcrypt(password);
             case "scrypt" -> encodeWithScrypt(password);
@@ -51,34 +51,31 @@ public class PasswordEncryptionService implements IPasswordEncryptionService {
     public String encodeWithArgon2id(Map<String, Object> params) {
         char[] passwordCharArray = params.get("password").toString().toCharArray();
         Charset charset = StandardCharsets.UTF_8;
-        String hashedPassword = argon2.hash(
-                (Integer) params.get("iterations"),
-                (Integer) params.get("memory"),
-                (Integer) params.get("parallelism"),
-                passwordCharArray,
-                charset);
+        int iterations = (params.get("iterations") != null) ? (int) params.get("iterations") : 1;
+        int memory = (params.get("memory") != null) ? (Integer) params.get("memory") : 1024;
+        int parallelism = (params.get("parallelism") != null) ? (Integer) params.get("parallelism") : 1;
+        String hashedPassword = argon2.hash(iterations, memory, parallelism, passwordCharArray, charset);
         argon2.wipeArray(passwordCharArray);
         return hashedPassword;
     }
 
     public void checkParams(String algorithm, Map<String, Object> params) throws BadRequestException {
-        String password = params.get("password").toString();
-        int iterations = (Integer) params.get("iterations");
-        int memory = (Integer) params.get("memory");
-        int parallelism = (Integer) params.get("parallelism");
+        String password = (params.get("password") != null) ? params.get("password").toString() : "";
+        int iterations = (params.get("iterations") != null) ? (int) params.get("iterations") : 1;
+        int memory = (params.get("memory") != null) ? (Integer) params.get("memory") : 1024;
+        int parallelism = (params.get("parallelism") != null) ? (Integer) params.get("parallelism") : 1;
         if (password.isEmpty()) {
             throw new BadRequestException("Password is required");
         }
         if (algorithm.equals("argon2id")) {
             if (iterations <= 0 || iterations > 20) {
-                throw new BadRequestException("The number of iterations must be greater than 0 and less than or equal to 20");
+                throw new BadRequestException("Number of iterations must be between 0 and 20");
             }
             if (memory <= 0 || memory > 100000) {
-                throw new BadRequestException(
-                        "The number of kilobytes of memory must be greater than 0 and less than or equal to 100000");
+                throw new BadRequestException("Number of kilobytes of memory must be between 0 and 100000");
             }
             if (parallelism <= 0 || parallelism > 10) {
-                throw new BadRequestException("The parallelism number must be greater than 0 and less than or equal to 10");
+                throw new BadRequestException("Number of parallelism must be between 0 and 10");
             }
         }
     }
