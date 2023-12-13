@@ -16,12 +16,12 @@ import com.project.password_encryption.exceptions.custom.BadRequestException;
 @ControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionsHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(BadRequestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> badRequestException(Exception e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("warning", e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
+  @ExceptionHandler(BadRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ResponseEntity<Object> badRequestException(Exception e) {
+    Map<String, Object> response = new HashMap<>();
+    response.put("warning", e.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+  }
 
 }

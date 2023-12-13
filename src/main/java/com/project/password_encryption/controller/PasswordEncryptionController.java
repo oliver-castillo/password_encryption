@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/api/v1/encrypt_password")
 public class PasswordEncryptionController {
 
-    private final IPasswordEncryptionService passwordEncryptionService;
+  private final IPasswordEncryptionService passwordEncryptionService;
 
-    public PasswordEncryptionController(IPasswordEncryptionService passwordEncryptionService) {
-        this.passwordEncryptionService = passwordEncryptionService;
-    }
+  public PasswordEncryptionController(IPasswordEncryptionService passwordEncryptionService) {
+    this.passwordEncryptionService = passwordEncryptionService;
+  }
 
-    @GetMapping("/{algorithm}")
-    public ResponseEntity<Object> getEncryptedPassword(
-            @PathVariable String algorithm,
-            @RequestBody Map<String, Object> params) {
-        Map<String, String> response = passwordEncryptionService.encodePassword(algorithm, params);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+  @GetMapping("/{algorithm}")
+  public ResponseEntity<Object> getEncryptedPassword(
+          @PathVariable String algorithm,
+          @RequestBody Map<String, Object> params) {
+    Map<String, String> response = passwordEncryptionService.encodePassword(algorithm, params);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
 
 }

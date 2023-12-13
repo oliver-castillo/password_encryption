@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface IPasswordEncryptionService {
 
-    Map<String, String> encodePassword(String algorithm, Map<String, Object> params);
+  Map<String, String> encodePassword(String algorithm, Map<String, Object> params);
 
 }
