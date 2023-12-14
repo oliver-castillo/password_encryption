@@ -71,7 +71,7 @@ public class PasswordEncryptionService implements IPasswordEncryptionService {
       if (iterations <= 0 || iterations > 20) {
         throw new BadRequestException("Number of iterations must be between 0 and 20");
       }
-      if (memory <= 0 || memory > 100000) {
+      if (memory < 1024 || memory > 100000) {
         throw new BadRequestException("Number of kilobytes of memory must be between 0 and 100000");
       }
       if (parallelism <= 0 || parallelism > 10) {
