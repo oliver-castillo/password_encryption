@@ -78,7 +78,7 @@ If there was no problem, you will get the encrypted password and the name of the
 
     {
         "encryptedPassword": "**encrypted_password**",
-        "algorithmUsed": "some_algorithm"
+        "algorithmUsed": "algorithm"
     }
 
 Remember to review the documentation for additional details on using the API and its features. We hope you find this password encryption tool useful!
